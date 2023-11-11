@@ -2,6 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:weather_app/additional_info_item.dart';
+
+import 'hourly_forecast_item.dart';
 
 class WeatherScreen extends StatelessWidget {
   const WeatherScreen({super.key});
@@ -94,54 +97,28 @@ class WeatherScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Placeholder(
-                  fallbackHeight: 150,
-                ),
                 const SizedBox(
                   height: 20,
                 ),
-                const Placeholder(
-                  fallbackHeight: 150,
+                const Text(
+                  'Additional Information',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
                 ),
+                const SizedBox(height: 16),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    AdditionalInformation(icon: Icons.water_drop,label: 'Humidity',value: '91'),
+                    AdditionalInformation(icon: Icons.air,label: 'Wind Speed',value: '7.5'),
+                    AdditionalInformation(icon: Icons.beach_access,label: 'Pressure',value: '1000'),
+                  ],
+                )
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class HourlyForecast extends StatelessWidget {
-  const HourlyForecast({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 6,
-      child: Container(
-        width: 100,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-        padding: const EdgeInsets.all(8),
-        child: const Column(
-          children: [
-            Text(
-              '03:00',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Icon(Icons.cloud),
-            SizedBox(height: 8),
-            Text(
-              '312.57',
-              style: TextStyle(
-                fontSize: 12,
-              ),
-            ),
-          ],
         ),
       ),
     );
