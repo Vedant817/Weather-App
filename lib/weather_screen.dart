@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app/additional_info_item.dart';
 import 'package:weather_app/secrets.dart';
 
@@ -17,6 +17,7 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  late Future<Map<String, dynamic>> weather;
   @override
   void initState() {
     // TODO: implement initState
@@ -57,9 +58,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
           IconButton(
             //? Used Gesture Detector but used Inkwell because it gives flash effect.
             onPressed: () {
-              if (kDebugMode) {
-                print("Refresh");
-              }
+              setState(() {
+                weather = getCurrentWeather();
+              });
             },
             icon: const Icon(Icons.refresh),
           ),
@@ -69,7 +70,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: FutureBuilder(
-              future: getCurrentWeather(),
+              future: weather,
               builder: (context, snapshot) {
                 // print(snapshot);
                 // print(snapshot.runtimeType);
@@ -161,9 +162,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                           itemBuilder: (context, index){
                             final hourlyForecast = data['list'][index + 1];
                             final hourlySky = data['list'][index + 1]['weather'][0]['main'];
-                            final time = DateTime.parse(hourlyForecast['dt_text']);
+                            final time = DateTime.parse(hourlyForecast['dt_txt']);
                             return HourlyForecastItem(
-                                time: DateFormat.j.format(time),
+                                time: DateFormat.j().format(time),
                                 temperature: hourlyForecast['main']['temp'].toString(),
                                 icon: hourlySky == 'Clouds' || hourlySky == 'Rain' ? Icons.cloud : Icons.sunny,
                             );
